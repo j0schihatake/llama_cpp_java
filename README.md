@@ -82,3 +82,5 @@ docker run -it --rm --gpus all ubuntu nvidia-smi
 После правильного выполнения этих трех шагов вы можете следовать руководству nVidia по настройке CUDA Toolkit. Вот еще один документ nVidia(https://docs.nvidia.com/cuda/wsl-user-guide/index.html#running-cuda), в котором говорится о той же проблеме, с которой вы столкнулись в главе 8. Они утверждают(https://docs.nvidia.com/cuda/pdf/CUDA_on_WSL_User_Guide.pdf), что This error usually indicates that the right Microsoft Windows Insider Preview Builds, WSL 2, NVIDIA drivers and NVIDIA Container Toolkit may not be installed correctly.
 
 Для меня это была моя версия сборки Windows Insider Preview, неправильно установленная на версию 20145 или выше.
+
+Так-же можно настроить установки на бекенде докера(версию wsl2) https://docs.docker.com/desktop/wsl/
