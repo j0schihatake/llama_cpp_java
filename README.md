@@ -64,7 +64,8 @@ https://www.youtube.com/watch?v=V2efVSXSlqc
 Vicuna сборки
 
 
-Инструкция для запуска в Docker на Windows:
+---------------------------------------------------------------------   Инструкция для запуска в Docker на Windows:
 
 Для запуска docker требуется установить ubuntu и WSL2
 Далее так же требуется установить поддержку NVIDIA_Container Tolkit: https://github.com/NVIDIA/nvidia-docker
+Инструкция от Microsoft: https://learn.microsoft.com/ru-ru/windows/ai/directml/gpu-cuda-in-wsl
