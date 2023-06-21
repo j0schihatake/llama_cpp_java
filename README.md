@@ -57,3 +57,6 @@ https://github.com/LostRuins/koboldcpp/discussions/251 -->
 Обновлено до версии 1.31.2
 https://hub.docker.com/r/noneabove1182/koboldcpp-gpu
 https://hub.docker.com/r/noneabove1182/koboldcpp
+
+Генерация аватара за бесплатно:
+https://www.youtube.com/watch?v=V2efVSXSlqc
