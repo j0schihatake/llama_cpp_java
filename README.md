@@ -85,3 +85,5 @@ docker run -it --rm --gpus all ubuntu nvidia-smi
 
 Так-же можно настроить установки на бекенде докера(версию wsl2) https://docs.docker.com/desktop/wsl/
 Тут берем отдельный драйвер для Nvidea: https://docs.nvidia.com/cuda/wsl-user-guide/index.html
+
+Хороший урок: https://www.youtube.com/watch?v=jdip_6vTw0s
