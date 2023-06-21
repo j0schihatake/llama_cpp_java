@@ -62,3 +62,9 @@ https://hub.docker.com/r/noneabove1182/koboldcpp
 https://www.youtube.com/watch?v=V2efVSXSlqc
 
 Vicuna сборки
+
+
+Инструкция для запуска в Docker на Windows:
+
+Для запуска docker требуется установить ubuntu и WSL2
+Далее так же требуется установить поддержку NVIDIA_Container Tolkit: https://github.com/NVIDIA/nvidia-docker
