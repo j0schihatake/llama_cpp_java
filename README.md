@@ -60,3 +60,5 @@ https://hub.docker.com/r/noneabove1182/koboldcpp
 
 Генерация аватара за бесплатно:
 https://www.youtube.com/watch?v=V2efVSXSlqc
+
+Vicuna сборки
