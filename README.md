@@ -83,6 +83,9 @@ docker run -it --rm --gpus all ubuntu nvidia-smi
 
 Для меня это была моя версия сборки Windows Insider Preview, неправильно установленная на версию 20145 или выше.
 
+---------------------------------------------------------------------  Запуск rest сервера:
+Видео про работу с телеграм ботом по рест: https://www.youtube.com/watch?v=PMFf9FwPN70
+
 Так-же можно настроить установки на бекенде докера(версию wsl2) https://docs.docker.com/desktop/wsl/
 Тут берем отдельный драйвер для Nvidea: https://docs.nvidia.com/cuda/wsl-user-guide/index.html
 
