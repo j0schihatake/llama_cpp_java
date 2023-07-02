@@ -81,6 +81,6 @@ CMD ["/bin/bash"]
 
 # запуск:
 # docker build -t llamaserver .
-# docker run -dit --name llamaserver -p 221:22 -p 8000:8000--gpus all --shm-size="12gb" --restart unless-stopped llamaserver:latest
+# docker run -dit --name llamaserver -p 221:22 -p 8000:8000 --gpus all --restart unless-stopped llamaserver:latest
 # docker container attach llamaserver
 # python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin
