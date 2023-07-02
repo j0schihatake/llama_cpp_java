@@ -15,10 +15,34 @@ RUN apt-get update \
         wget \
         openssh-server \
         nano \
+        software-properties-common \
+        python3-venv \
+        python3-tk \
+        pip \
+        bash \
+        git \
+        ncdu \
+        net-tools \
+        openssh-server \
+        libglib2.0-0 \
+        libsm6 \
+        libgl1 \
+        libxrender1 \
+        libxext6 \
+        ffmpeg \
+        wget \
+        curl \
+        psmisc \
+        rsync \
+        vim \
+        unzip \
+        htop \
+        pkg-config \
+        libcairo2-dev \
+        libgoogle-perftools4 libtcmalloc-minimal4  \
     && rm -rf /var/lib/apt/lists/*
 
 # Setting up locales
-
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
@@ -34,40 +58,29 @@ RUN useradd -rm -d /home/llama-cpp-user -s /bin/bash -G users,sudo,llama-cpp-gro
 # Update user password
 RUN echo 'llama-cpp-user:admin' | chpasswd
 
-# Updating conda to the latest version
-#RUN conda update conda -y
-
-# Create virtalenv
-RUN conda create -n llamacpp -y python=3.10.6
-
-# Adding ownership of /opt/conda to $user
-RUN chown -R llama-cpp-user:users /opt/conda
-
-# conda init bash for $user
-RUN su - llama-cpp-user -c "conda init bash"
-
 # Download latest github/llama-cpp in llama.cpp directory and compile it
-RUN su - llama-cpp-user -c "git clone https://github.com/ggerganov/llama.cpp.git ~/llama.cpp \
-                            && cd ~/llama.cpp \
-                            && make "
+RUN git clone https://github.com/ggerganov/llama.cpp.git ~/llama.cpp && \
+    cd ~/llama.cpp && \
+    make
 
 # Install Requirements for python virtualenv
-RUN su - llama-cpp-user -c "cd ~/llama.cpp \
-                            && conda activate llamacpp \
-                            && python3 -m pip install -r requirements.txt " 
+RUN cd ~/llama.cpp && \
+    python3 -m pip install -r requirements.txt
 
 # Download model
-# RUN su - llama-cpp-user -c "https://github.com/facebookresearch/llama.git ~/llama \
-#                            && cd ~/llama \
-#                            && ./download.sh "
-COPY ./model/ggml-gpt4-x-vicuna-13b-q5_1.bin /
 
-# COPY entrypoint.sh /usr/bin/entrypoint
-# RUN chmod 755 /usr/bin/entrypoint
-# ENTRYPOINT ["/usr/bin/entrypoint"]
+RUN pip install llama-cpp-python[server]
+
+COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/
 
 # Preparing for login
 ENV HOME /home/llama-cpp-user
 WORKDIR ${HOME}/llama.cpp
 USER llama-cpp-user
 CMD ["/bin/bash"]
+
+# запуск:
+# docker build -t llamaserver .
+# docker run -dit --name llamaserver -p 221:22 -p 8000:8000--gpus all --shm-size="12gb" --restart unless-stopped llamaserver:latest
+# docker container attach llamaserver
+# python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin
