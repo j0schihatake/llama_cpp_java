@@ -23,9 +23,6 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 # SSH exposition
-
-RUN git clone eachadea/ggml-gpt4-x-vicuna-13b
-
 EXPOSE 22/tcp
 RUN service ssh start
 
