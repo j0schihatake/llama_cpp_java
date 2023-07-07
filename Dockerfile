@@ -93,20 +93,22 @@ ADD requirements.txt /home/llama-cpp-user/server/
 RUN cd /home/llama-cpp-user/server && \
    python3 -m pip install -r requirements.txt
 
-RUN cd /home/llama-cpp-user/server/src
+RUN cd /home/llama-cpp-user/server/
 
 # CMD uvicorn main:app --reload --host 0.0.0.0 --port 8500
-#CMD uvicorn src.main:app --reload
 
 # Download model
 # COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/      --> Так не отработало persmission denied
 
 # Preparing for login
-ENV HOME /home/llama-cpp-user/
+ENV HOME /home/llama-cpp-user/server/
 WORKDIR ${HOME}
-USER llama-cpp-user
-CMD ["/bin/bash"]
+#USER llama-cpp-user
+#CMD ["/bin/bash"]
 #CMD ["python", "llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
+
+#CMD cd /home/llama-cpp-user/server/
+CMD uvicorn src.main:app --reload
 
 #CMD["/bin/bash", "python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
 #ENTRYPOINT ["/home/llama-cpp-user/run.sh"]
