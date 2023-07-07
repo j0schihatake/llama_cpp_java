@@ -50,7 +50,7 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 # Добавил из готового примера:
-ENV HOST=0.0.0.0
+#ENV HOST=0.0.0.0
 #EXPOSE 8086
 #ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 #ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
@@ -86,26 +86,26 @@ RUN mkdir /home/llama-cpp-user/server/src
 
 RUN cd /home/llama-cpp-user/server
 
-ADD ./server-main/src/main.py /home/llama-cpp-user/server/src
+ADD src/main.py /home/llama-cpp-user/server/src
 
-ADD ./server-main/requirements.txt /home/llama-cpp-user/server/
+ADD requirements.txt /home/llama-cpp-user/server/
+
+RUN cd /home/llama-cpp-user/server && \
+   python3 -m pip install -r requirements.txt
 
 RUN cd /home/llama-cpp-user/server/src
 
-#RUN cd /home/llama-cpp-user/app && \
-#   python3 -m pip install -r requirements.txt
-
 # CMD uvicorn main:app --reload --host 0.0.0.0 --port 8500
-CMD uvicorn main:app --reload --host 0.0.0.0
+#CMD uvicorn src.main:app --reload
 
 # Download model
 # COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/      --> Так не отработало persmission denied
 
 # Preparing for login
-#ENV HOME /home/llama-cpp-user/
-#WORKDIR ${HOME}
-#USER llama-cpp-user
-#CMD ["/bin/bash"]
+ENV HOME /home/llama-cpp-user/
+WORKDIR ${HOME}
+USER llama-cpp-user
+CMD ["/bin/bash"]
 #CMD ["python", "llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
 
 #CMD["/bin/bash", "python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
@@ -121,3 +121,5 @@ CMD uvicorn main:app --reload --host 0.0.0.0
 # прочие команды попыток ЗАПУСК С VOLUME MODEL:
 # docker run -dit --name llamaserver -p 221:22 -p 8000:8000 --gpus all --restart unless-stopped llamaserver:latest
 # docker run --rm -it -dit --name llamaserver -p 8086:8086 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/wizardLM-7B.ggmlv3.q4_0.bin:/home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin  --gpus all --restart unless-stopped llamaserver:latest
+
+# docker run -dit --name llamaserver -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
