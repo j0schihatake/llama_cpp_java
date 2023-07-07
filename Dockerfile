@@ -70,17 +70,33 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git ~/llama.cpp && \
     cd ~/llama.cpp && \
     make
 
-# Install Requirements for python virtualenv
+# Install Requirements for llama.cpp
 RUN cd ~/llama.cpp && \
     python3 -m pip install -r requirements.txt
 
 RUN pip install llama-cpp-python[server]
 
+RUN pip install fastapi
+
+RUN pip install uvicorn[standard]
+
 RUN mkdir /home/llama-cpp-user/model
 
-ADD ./run.sh /home/llama-cpp-user/
+RUN mkdir /home/llama-cpp-user/server
 
-RUN cd /home/llama-cpp-user/
+RUN cd /home/llama-cpp-user/server
+
+ADD ./server-main/server.py /home/llama-cpp-user/server
+
+ADD ./server-main/requirements.txt /home/llama-cpp-user/server
+
+RUN cd /home/llama-cpp-user/server
+
+#RUN cd /home/llama-cpp-user/app && \
+#    python3 -m pip install -r requirements.txt
+
+# CMD uvicorn main:app --reload --host 0.0.0.0
+CMD uvicorn server.server:app --reload
 
 # Download model
 # COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/      --> Так не отработало persmission denied
@@ -93,7 +109,8 @@ RUN cd /home/llama-cpp-user/
 #CMD ["python", "llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
 
 #CMD["/bin/bash", "python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
-ENTRYPOINT ["/home/llama-cpp-user/run.sh"]
+#ENTRYPOINT ["/home/llama-cpp-user/run.sh"]
+#CMD python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM.bin
 
 # запуск:
 # docker build -t llamaserver .
