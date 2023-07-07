@@ -1,4 +1,4 @@
-# Dockerfile to deploy a llama-cpp container with conda-ready environments 
+# Dockerfile to deploy a llama-cpp container with conda-ready environments
 
 # docker pull continuumio/miniconda3:latest
 
@@ -76,27 +76,27 @@ RUN cd ~/llama.cpp && \
 
 RUN pip install llama-cpp-python[server]
 
-RUN pip install fastapi
-
-RUN pip install uvicorn[standard]
+RUN pip install pydantic uvicorn[standard] fastapi
 
 RUN mkdir /home/llama-cpp-user/model
 
 RUN mkdir /home/llama-cpp-user/server
 
-RUN cd /home/llama-cpp-user/server
-
-ADD ./server-main/server.py /home/llama-cpp-user/server
-
-ADD ./server-main/requirements.txt /home/llama-cpp-user/server
+RUN mkdir /home/llama-cpp-user/server/src
 
 RUN cd /home/llama-cpp-user/server
+
+ADD ./server-main/src/main.py /home/llama-cpp-user/server/src
+
+ADD ./server-main/requirements.txt /home/llama-cpp-user/server/
+
+RUN cd /home/llama-cpp-user/server/src
 
 #RUN cd /home/llama-cpp-user/app && \
-#    python3 -m pip install -r requirements.txt
+#   python3 -m pip install -r requirements.txt
 
-# CMD uvicorn main:app --reload --host 0.0.0.0
-CMD uvicorn server.server:app --reload
+# CMD uvicorn main:app --reload --host 0.0.0.0 --port 8500
+CMD uvicorn main:app --reload --host 0.0.0.0
 
 # Download model
 # COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/      --> Так не отработало persmission denied
