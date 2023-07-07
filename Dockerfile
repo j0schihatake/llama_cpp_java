@@ -50,8 +50,8 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 # Добавил из готового примера:
-ENV HOST=127.0.0.73
-EXPOSE 8086
+#ENV HOST=127.0.0.1
+#EXPOSE 8086
 ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
 ENV PYTHON_VERSION=3.11.3
@@ -78,7 +78,7 @@ RUN pip install llama-cpp-python[server]
 
 RUN mkdir /home/llama-cpp-user/model
 
-COPY ./run.sh /home/llama-cpp-user/
+ADD ./run.sh /home/llama-cpp-user/
 
 RUN cd /home/llama-cpp-user/
 
@@ -97,9 +97,10 @@ ENTRYPOINT ["/home/llama-cpp-user/run.sh"]
 
 # запуск:
 # docker build -t llamaserver .
-# docker run -dit --name llamaserver -p 221:22 -p 8000:8000 --gpus all --restart unless-stopped llamaserver:latest
+# docker run -dit --entrypoint /home/llama-cpp-user/run.sh  --name llamaserver -p 8080:8080 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/wizardLM-7B.ggmlv3.q4_0.bin:/home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin  --gpus all --restart unless-stopped llamaserver:latest
 # docker container attach llamaserver
 # python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin
 
-# ЗАПУСК С VOLUME MODEL:
-# docker run --rm -it -dit --name llamaserver -p 221:22 -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/wizardLM-7B.ggmlv3.q4_0.bin:/home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin  --gpus all --restart unless-stopped llamaserver:latest
+# прочие команды попыток ЗАПУСК С VOLUME MODEL:
+# docker run -dit --name llamaserver -p 221:22 -p 8000:8000 --gpus all --restart unless-stopped llamaserver:latest
+# docker run --rm -it -dit --name llamaserver -p 8086:8086 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/wizardLM-7B.ggmlv3.q4_0.bin:/home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin  --gpus all --restart unless-stopped llamaserver:latest
