@@ -1,5 +1,12 @@
 # llama_cpp_java
+
 Как я знакомился с alpaca, llama.cpp, coboltcpp, cuda в docker и остальные премудрости ggml.
+
+Ветки:
+
+main - просто llama в docker без автозапуска, клон запуска с локальной машины.
+
+py_server - это интеграция с кодом рест сервиса на FastApi, за стет использования llama_cpp_python.
 
 
 Видео инструкция:
