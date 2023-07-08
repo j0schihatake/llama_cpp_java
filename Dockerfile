@@ -86,27 +86,13 @@ RUN cd /home/llama-cpp-user/server && \
 
 RUN cd /home/llama-cpp-user/server/
 
-# CMD uvicorn main:app --reload --host 0.0.0.0 --port 8500
-
-# Download model
-# COPY ./model/wizardLM-7B.ggmlv3.q4_0.bin /home/llama-cpp-user/model/      --> Так не отработало persmission denied
-
 # Preparing for login
 ENV HOME /home/llama-cpp-user/server/
 WORKDIR ${HOME}
-#USER llama-cpp-user
-#CMD ["/bin/bash"]
-#CMD ["python", "llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
 
-#CMD cd /home/llama-cpp-user/server/
 CMD uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
-
-#CMD["/bin/bash", "python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin"]
-#ENTRYPOINT ["/home/llama-cpp-user/run.sh"]
-#CMD python3 -m llama_cpp.server --model /home/llama-cpp-user/model/wizardLM.bin
 
 # запуск:
 # docker build -t llamaserver .
-# docker run -dit --entrypoint /home/llama-cpp-user/run.sh  --name llamaserver -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/wizardLM-7B.ggmlv3.q4_0.bin:/home/llama-cpp-user/model/wizardLM-7B.ggmlv3.q4_0.bin  --gpus all --restart unless-stopped llamaserver:latest
 # docker container attach llamaserver
 # docker run -dit --name llamaserver -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
