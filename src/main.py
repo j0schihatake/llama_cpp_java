@@ -1,16 +1,17 @@
-import copy
-import asyncio
-import requests
-
-from fastapi import FastAPI, Request
 from llama_cpp import Llama
-from sse_starlette import EventSourceResponse
 
 # load the model
 print("Loading model...")
 llm = Llama(model_path="/home/llama-cpp-user/model/vicuna-7b-v1.3-superhot-8k.ggmlv3.q5_K_M.bin")
 
 print("Model loaded!")
+
+stream = llm(
+        question,
+        max_tokens=300,
+        stop=["\n", " Q:"],
+        echo=True,
+    )
 
 
 app = FastAPI()
@@ -62,40 +63,35 @@ async def jokes(request: Request):
 
     return EventSourceResponse(sse_event())
 
+class StringResponse:
+    def __init__(self):
+        self.response = ""
 
-@app.get("/llama")
-async def llama(request: Request):
-    stream = llm(
-        "Question: Who is Ada Lovelace? Answer: ",
-        max_tokens=100,
-        stop=["\n", " Q:"],
-        stream=True,
-    )
+    def append(self, data: str):
+        self.response += data + " "
 
-    async def async_generator():
-        for item in stream:
-            yield item
-
-    async def server_sent_events():
-        async for item in async_generator():
-            if await request.is_disconnected():
-                break
-
-            result = copy.deepcopy(item)
-            text = result["choices"][0]["text"]
-
-            yield {"data": text}
-
-    return EventSourceResponse(server_sent_events())
-
+    def get_response(self):
+        return self.response.strip()
 
 @app.post("/llama")
 async def llama(request: Request):
     request_data = await request.json()
     message = request_data.get("message", "")
 
-    responses = llm(message)
+    async def async_generator(response: StringResponse):
+        # Вызов функции llm и получение всех ответов в список
+        responses = llm(
+            message,
+            max_tokens=300,
+            stop=["\n", " Q:"],
+            echo=True,
+        )
+        for item in responses:
+            response.append(item)
 
-    result = " ".join(responses)  # Собираем все события в одну строку, разделенную пробелами
+    async def collect_responses():
+        response = StringResponse()
+        await async_generator(response)
+        return {"response": response.get_response()}
 
-    return {"response": result}
+    return await collect_responses()
