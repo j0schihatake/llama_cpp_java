@@ -25,9 +25,6 @@ RUN apt-get update \
         bash \
         git \
         ncdu \
-        maven \
-        openjdk-17-jdk \
-        jython \
         openssh-server \
         libglib2.0-0 \
         libsm6 \
@@ -88,23 +85,6 @@ RUN cd /home/llama-cpp-user/server && \
    python3 -m pip install -r requirements.txt
 
 RUN cd /home/llama-cpp-user/server/
-
-# --------------------------------------------------------------------------------------------------------
-# Далее планирую подтянуть из моего репозитория java код и собрать приложение для доступа из java в python:
-
-#RUN mkdir /home/llama-cpp-user/code
-
-# Копируйте файлы проекта в контейнер
-#RUN git clone https://github.com/j0schihatake/llama_cpp_python_Java.git /home/llama-cpp-user/code
-
-# Соберите JAR-файл
-# RUN cd /home/llama-cpp-user/code && \
-#    git pull && \
-#    mvn package -DskipTests
-
-# Копируем jar-ник в папку /home/llama-cpp-user/server/src
-# RUN cd /home/llama-cpp-user/code/target/ && \
-#    mv llama_cpp_python_java-0.0.1-SNAPSHOT.jar /home/llama-cpp-user/server/src
 
 # Устанавливаем начальную директорию
 ENV HOME /home/llama-cpp-user/server
