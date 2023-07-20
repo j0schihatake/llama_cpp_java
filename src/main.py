@@ -8,7 +8,7 @@ from sse_starlette import EventSourceResponse
 
 # load the model
 print("Loading model...")
-llm = Llama(model_path="/home/llama-cpp-user/model/ggml-gpt4-x-vicuna-13b-q5_1.bin")
+llm = Llama(model_path="/home/llama-cpp-user/model/vicuna-7b-v1.3-superhot-8k.ggmlv3.q5_K_M.bin")
 
 print("Model loaded!")
 
@@ -20,12 +20,11 @@ app = FastAPI()
 async def hello():
     return {"hello": "wooooooorld"}
 
-
 @app.get("/model")
-async def model():
+async def model(question: str):
     stream = llm(
-        "Question: Who is Ada Lovelace? Answer: ",
-        max_tokens=100,
+        question,
+        max_tokens=300,
         stop=["\n", " Q:"],
         echo=True,
     )
@@ -88,3 +87,15 @@ async def llama(request: Request):
             yield {"data": text}
 
     return EventSourceResponse(server_sent_events())
+
+
+@app.post("/llama")
+async def llama(request: Request):
+    request_data = await request.json()
+    message = request_data.get("message", "")
+
+    responses = llm(message)
+
+    result = " ".join(responses)  # Собираем все события в одну строку, разделенную пробелами
+
+    return {"response": result}
