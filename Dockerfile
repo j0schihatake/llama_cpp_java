@@ -4,8 +4,6 @@
 
 ARG TAG=latest
 FROM continuumio/miniconda3:$TAG
-#FROM alpine:$TAG
-#COPY --from=openjdk:22-jdk-slim / /
 
 RUN apt-get update \
     && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
@@ -72,7 +70,7 @@ RUN cd ~/llama.cpp && \
 
 RUN pip install llama-cpp-python[server]
 
-#RUN pip install pydantic uvicorn[standard] fastapi
+RUN pip install pydantic uvicorn[standard] fastapi
 
 RUN mkdir /home/llama-cpp-user/model
 
@@ -82,8 +80,7 @@ RUN mkdir /home/llama-cpp-user/server/src
 
 RUN cd /home/llama-cpp-user/server
 
-#ADD src/main.py /home/llama-cpp-user/server/src
-ADD src/llama.py /home/llama-cpp-user/server/src
+ADD src/main.py /home/llama-cpp-user/server/src
 
 ADD requirements.txt /home/llama-cpp-user/server/
 
@@ -95,52 +92,29 @@ RUN cd /home/llama-cpp-user/server/
 # --------------------------------------------------------------------------------------------------------
 # Далее планирую подтянуть из моего репозитория java код и собрать приложение для доступа из java в python:
 
-# Используйте образ OpenJDK для Java
-#FROM openjdk:22-jdk-slim AS builder
-
-# Установите Maven
-#RUN apt-get update && apt-get install -y maven
-
-RUN mkdir /home/llama-cpp-user/code
-
-# Установите рабочую директорию
-#WORKDIR /app
+#RUN mkdir /home/llama-cpp-user/code
 
 # Копируйте файлы проекта в контейнер
-RUN git clone https://github.com/j0schihatake/llama_cpp_python_Java.git /home/llama-cpp-user/code
+#RUN git clone https://github.com/j0schihatake/llama_cpp_python_Java.git /home/llama-cpp-user/code
 
 # Соберите JAR-файл
-RUN cd /home/llama-cpp-user/code && \
-    git pull && \
-    mvn package -DskipTests
+# RUN cd /home/llama-cpp-user/code && \
+#    git pull && \
+#    mvn package -DskipTests
 
-# перемещаю jar-ник в папку ~/llama.cpp
-RUN cd /home/llama-cpp-user/code/target/ && \
-    mv llama_cpp_python_java-0.0.1-SNAPSHOT.jar /home/llama-cpp-user/server/src
+# Копируем jar-ник в папку /home/llama-cpp-user/server/src
+# RUN cd /home/llama-cpp-user/code/target/ && \
+#    mv llama_cpp_python_java-0.0.1-SNAPSHOT.jar /home/llama-cpp-user/server/src
 
-# Используйте образ OpenJDK для Java
-#FROM openjdk:22-jdk-slim
-
-# Установите рабочую директорию
-#WORKDIR /app
-
-# Скопируйте JAR-файл из образа builder в образ runtime
-#COPY --from=builder /app/target/llama_cpp_python_java-0.0.1-SNAPSHOT.jar .
-
-# Preparing for login
-ENV HOME /home/llama-cpp-user/server/src
-#ENV HOME ~/llama.cpp
+# Устанавливаем начальную директорию
+ENV HOME /home/llama-cpp-user/server
 WORKDIR ${HOME}
 
-#CMD java -jar llama_cpp_python_java-0.0.1-SNAPSHOT.jar
-
-# Запустите вашу Java-приложение
-#CMD java -jar llama_cpp_python_java-0.0.1-SNAPSHOT.jar
-
-#CMD uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+# Запустите ваше Java-приложение
+CMD uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 
 # запуск:
 # docker build -t llamaserver .
 # docker container attach llamaserver
 # docker run -dit --name llamaserver -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
-# docker run -dit --name llamaserver -p 8087:8078 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
+# docker run -dit --name llamaserver -p 8088:8088 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
