@@ -90,11 +90,15 @@ RUN cd /home/llama-cpp-user/server/
 ENV HOME /home/llama-cpp-user/server
 WORKDIR ${HOME}
 
-# Запустите ваше Java-приложение
+# Запуск Fast api:
 CMD uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 
 # запуск:
+# в main.py указать имя модели которую собираемся использовать
 # docker build -t llamaserver .
-# docker container attach llamaserver
 # docker run -dit --name llamaserver -p 8000:8000 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
-# docker run -dit --name llamaserver -p 8088:8088 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
+# или:
+# docker run -dit --name llamaserver -p 8000:8000 -v C:/programs/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
+
+# Debug
+# docker container attach llamaserver

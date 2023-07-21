@@ -89,13 +89,15 @@ async def llama(request: Request):
 @app.post("/talk")
 async def talk(request: Request):
     request_data = await request.json()
-    message = request_data.get("message", "")
+
+    message = request_data["message"]
+    max_tokens = request_data.get("max_tokens", 100)
 
     logging.info(f"Received request with message: {message}")
 
     stream = llm(
         message,
-        max_tokens=100,
+        max_tokens=max_tokens,
         stop=["\n", " Q:"],
         stream=True,
     )
