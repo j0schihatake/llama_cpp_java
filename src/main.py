@@ -1,22 +1,24 @@
+from fastapi import FastAPI, Request
+from llama_cpp import Llama
+from sse_starlette import EventSourceResponse
+
 import copy
 import asyncio
 import requests
 import logging
 
-from fastapi import FastAPI, Request
-from llama_cpp import Llama
-from sse_starlette import EventSourceResponse
-
 # load the model
 print("Loading model...")
-llm = Llama(model_path="/home/llama-cpp-user/model/vicuna-7b-v1.3-superhot-8k.ggmlv3.q5_K_M.bin")
+llm = Llama(model_path="/home/llama-cpp-user/model/codellama-13b-hf-rust-finetune-full.q5_k_m.gguf")
 print("Model loaded!")
 
 app = FastAPI()
 
+
 @app.get("/")
 async def hello():
     return {"hello": "wooooooorld"}
+
 
 @app.get("/model")
 async def model(question: str):
@@ -86,6 +88,7 @@ async def llama(request: Request):
 
     return EventSourceResponse(server_sent_events())
 
+
 @app.post("/talk")
 async def talk(request: Request):
     request_data = await request.json()
@@ -117,6 +120,7 @@ async def talk(request: Request):
             yield {"data": text}
 
     return EventSourceResponse(server_sent_events())
+
 
 @app.post("/llama")
 async def llama(request: Request):
