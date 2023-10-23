@@ -86,6 +86,9 @@ RUN cd /home/llama-cpp-user/server && \
 
 RUN cd /home/llama-cpp-user/server/
 
+# Устанавливаем название рабочей модели:
+RUN export MODEL=model-q8_0.gguf
+
 # Устанавливаем начальную директорию
 ENV HOME /home/llama-cpp-user/server
 WORKDIR ${HOME}
@@ -98,7 +101,7 @@ CMD uvicorn src.main:app --host 0.0.0.0 --port 8082 --reload
 # docker build -t llamaserver .
 # docker run -dit --name llamaserver -p 8082:8082 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
 # или:
-# docker run -dit --name llamaserver -p 8082:8082 -v C:/programs/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
+# docker run -dit --name llamaserver -p 8082:8082 -v C:/Program/Models/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
 
 # Debug
 # docker container attach llamaserver

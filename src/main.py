@@ -1,15 +1,16 @@
 from fastapi import FastAPI, Request
 from llama_cpp import Llama
 from sse_starlette import EventSourceResponse
-
+import os
 import copy
 import asyncio
 import requests
 import logging
 
+model = "/home/llama-cpp-user/model/" + os.environ.get('MODEL', 'model-q8_0.gguf')
 # load the model
 print("Loading model...")
-llm = Llama(model_path="/home/llama-cpp-user/model/model-q8_0.gguf")
+llm = Llama(model_path=model)
 print("Model loaded!")
 
 app = FastAPI()
