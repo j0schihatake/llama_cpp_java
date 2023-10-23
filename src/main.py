@@ -9,10 +9,15 @@ import logging
 
 # load the model
 print("Loading model...")
-llm = Llama(model_path="/home/llama-cpp-user/model/codellama-13b-hf-rust-finetune-full.q5_k_m.gguf")
+llm = Llama(model_path="/home/llama-cpp-user/model/model-q8_0.gguf")
 print("Model loaded!")
 
 app = FastAPI()
+
+# Настройки для Saiga2
+# Top-p 0.9
+# Top-k 30
+# Temperature 0,01
 
 
 @app.get("/")
@@ -43,12 +48,12 @@ async def ask(request: Request):
     max_tokens = request_data.get("max_tokens", 100)
     output = llm(f"Q: {message} A: ",
                  max_tokens=4000,
-                 temperature=0.7,
+                 temperature=0.01,
                  top_p=0.9,
                  stop=["Q:", "\n"],
                  echo=False,
                  repeat_penalty=1.1,
-                 top_k=40)
+                 top_k=30)
 
     # Extract the relevant information from the output
     response_text = output.get("choices", [])[0].get("text", "")

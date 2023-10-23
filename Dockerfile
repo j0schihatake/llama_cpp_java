@@ -1,6 +1,6 @@
 # Dockerfile to deploy a llama-cpp container with conda-ready environments
 
-# docker pull continuumio/miniconda3:latest
+#RUN docker pull continuumio/miniconda3:latest
 
 ARG TAG=latest
 FROM continuumio/miniconda3:$TAG
