@@ -121,3 +121,7 @@ docker run -it --rm --gpus all ubuntu nvidia-smi
 Тут берем отдельный драйвер для Nvidea: https://docs.nvidia.com/cuda/wsl-user-guide/index.html
 
 Хороший урок: https://www.youtube.com/watch?v=PB7zM3JrgkI
+
+---------------------------------------------------------------------- Saiga2:
+https://habr.com/ru/articles/759386/
+https://huggingface.co/spaces/IlyaGusev/saiga2_13b_gguf
