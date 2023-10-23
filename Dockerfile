@@ -104,6 +104,8 @@ RUN apt-get update && \
 ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64/
 RUN export JAVA_HOME
 
+RUN apt-get install build-essential
+
 # ---------------------------------------   Далее настройка директорий:
 
 RUN mkdir /home/llama-cpp-user/model
@@ -114,7 +116,9 @@ RUN mkdir /home/llama-cpp-user/server/src
 
 RUN cd /home/llama-cpp-user/server
 
-ADD src/main.py /home/llama-cpp-user/server/src
+#ADD src/main.py /home/llama-cpp-user/server/src
+
+ADD src/app.jar /home/llama-cpp-user/server/src
 
 ADD requirements.txt /home/llama-cpp-user/server/
 
@@ -123,22 +127,23 @@ RUN cd /home/llama-cpp-user/server && \
 
 # ---------------------------------------   Далее собираем java spring проект
 
-RUN mkdir /home/llama-cpp-user/java
+#RUN mkdir /home/llama-cpp-user/java
 
-RUN cd /home/llama-cpp-user/java
+#RUN cd /home/llama-cpp-user/java
 
-RUN git clone https://github.com/j0schihatake/NN_Java_Llama.git /home/llama-cpp-user/java/
+#RUN git clone https://github.com/j0schihatake/NN_Java_Llama.git /home/llama-cpp-user/java/
 
-RUN cd home/llama-cpp-user/java/ && \
-  git pull && \
-  mvn clean install -DskipTests
+#RUN cd home/llama-cpp-user/java/ && \
+#  git pull && \
+# mvn clean install -DskipTests
 
 # ---------------------------------------   Устанавливаем начальную директорию
-ENV HOME /home/llama-cpp-user/server
+ENV HOME /home/llama-cpp-user/server/src
 WORKDIR ${HOME}
 
 # Запуск Fast api:
-CMD uvicorn src.main:app --host 0.0.0.0 --port 8082 --reload
+#CMD uvicorn src.main:app --host 0.0.0.0 --port 8082 --reload
+CMD java -jar -Djava.library.path=/home/ app.jar
 
 # запуск:
 # в main.py указать имя модели которую собираемся использовать
