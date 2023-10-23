@@ -9,7 +9,7 @@ import logging
 
 # load the model
 print("Loading model...")
-llm = Llama(model_path="/home/llama-cpp-user/model/codellama-13b-hf-rust-finetune-full.q5_k_m.gguf")
+llm = Llama(model_path="/home/llama-cpp-user/model/model-q8_0.gguf")
 print("Model loaded!")
 
 app = FastAPI()
@@ -24,7 +24,7 @@ async def hello():
 async def model(question: str):
     stream = llm(
         question,
-        max_tokens=300,
+        max_tokens=4000,
         stop=["\n", " Q:"],
         echo=True,
     )
