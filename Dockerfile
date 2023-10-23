@@ -8,6 +8,8 @@ FROM continuumio/miniconda3:$TAG
 RUN apt-get update \
     && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
         git \
+        uvicorn \
+        libportaudio2 \
         locales \
         sudo \
         build-essential \
@@ -23,8 +25,8 @@ RUN apt-get update \
         python3-tk \
         pip \
         bash \
-        git \
         ncdu \
+        net-tools \
         openssh-server \
         libglib2.0-0 \
         libsm6 \
