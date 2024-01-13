@@ -101,7 +101,7 @@ CMD uvicorn src.main:app --host 0.0.0.0 --port 8082 --reload
 # docker build -t llamaserver .
 # docker run -dit --name llamaserver -p 8082:8082 -v D:/Develop/NeuronNetwork/llama_cpp/llama_cpp_java/model/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
 # или:
-# docker run -dit --name llamaserver -p 8082:8082 -v C:/Program/Models/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
+# docker run -dit --name llamaserver -p 8082:8082 -v C:/Program/Models/IlyaGusev_Saiga/:/home/llama-cpp-user/model/  --gpus all --restart unless-stopped llamaserver:latest
 
 # Запуск на cpu:
 # docker run -dit --name llamaserver -p 8082:8082 -v C:/Program/Models/:/home/llama-cpp-user/model/ --restart unless-stopped llamaserver:latest

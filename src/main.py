@@ -7,7 +7,7 @@ import asyncio
 import requests
 import logging
 
-model = "/home/llama-cpp-user/model/" + os.environ.get('MODEL', 'model-q8_0.gguf')
+model = "/home/llama-cpp-user/model/" + os.environ.get('MODEL', 'IlyaGusev_saiga_mistral_7b_gguf_q8_0.gguf')
 # load the model
 print("Loading model...")
 llm = Llama(model_path=model)
