@@ -87,7 +87,7 @@ RUN cd /home/llama-cpp-user/server && \
 RUN cd /home/llama-cpp-user/server/
 
 # Устанавливаем название рабочей модели:
-RUN export MODEL=model-q8_0.gguf
+RUN export MODEL=IlyaGusev_saiga_mistral_7b_gguf_q8_0.gguf
 
 # Устанавливаем начальную директорию
 ENV HOME /home/llama-cpp-user/server
