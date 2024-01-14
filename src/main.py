@@ -8,7 +8,8 @@ import asyncio
 
 model = "/home/llama-cpp-user/model/" + os.environ.get('MODEL', 'IlyaGusev_saiga_mistral_7b_gguf_q8_0.gguf')
 
-llm = Llama(model_path=model)
+# n_ctx - длинна контекста: llama(2048, 4096, 8192), llama2(4096; 8192; 16384) где 7,13,40.
+llm = Llama(model_path=model, verbose=True, n_ctx=2048)
 
 app = FastAPI()
 
@@ -29,7 +30,6 @@ async def hello():
 
 @app.post("/talk")
 async def ask(request: LLamaRequest):
-
     message = request.message
     print("Input questions: " + message)
 
