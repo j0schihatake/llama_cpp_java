@@ -2,7 +2,7 @@
 
 #RUN docker pull continuumio/miniconda3:latest
 
-ARG TAG=latest
+ARG TAG=24.1.2-0
 FROM continuumio/miniconda3:$TAG
 
 RUN apt-get update \
@@ -19,9 +19,9 @@ RUN apt-get update \
         tzdata \
         nano \
         software-properties-common \
+        pip \
         python3-venv \
         python3-tk \
-        pip \
         bash \
         ncdu \
         net-tools \
@@ -44,6 +44,12 @@ RUN apt-get update \
         libgoogle-perftools4 libtcmalloc-minimal4  \
     && rm -rf /var/lib/apt/lists/*
 
+# Install python 3.11
+
+#RUN sudo add-apt-repository ppa:deadsnakes/ppa
+
+#RUN sudo apt-get install python3.11
+
 # Setting up locales
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -60,6 +66,30 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git ~/llama.cpp && \
     cd ~/llama.cpp && \
     make && \
     git pull
+
+# Обновление удаленных к версии 12 пакетов:
+
+#RUN python3 -m pip install --upgrade pip
+
+#RUN sudo pip install virtualenv
+
+#RUN pip install setuptools
+
+#RUN pip install --upgrade setuptools
+
+#RUN python3 -m ensurepip --upgrade
+
+#RUN python3 -m pip install --user virtualenv
+
+#RUN python3 -m pip install --upgrade virtualenv
+
+#RUN virtualenv --upgrade-embed-wheels
+
+#RUN virtualenv --reset-app-data
+
+#RUN python3 -m pip install virtualenv
+
+#RUN python3 -m virtualenv llamaenv
 
 # Install Requirements for llama.cpp
 RUN cd ~/llama.cpp && \
@@ -87,7 +117,7 @@ RUN cd /home/llama-cpp-user/server && \
 RUN cd /home/llama-cpp-user/server/
 
 # Устанавливаем название рабочей модели:
-RUN export MODEL=IlyaGusev_saiga_mistral_7b_gguf_q8_0.gguf
+RUN export MODEL=model.gguf
 
 # Устанавливаем начальную директорию
 ENV HOME /home/llama-cpp-user/server
