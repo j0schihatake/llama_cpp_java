@@ -44,12 +44,6 @@ RUN apt-get update \
         libgoogle-perftools4 libtcmalloc-minimal4  \
     && rm -rf /var/lib/apt/lists/*
 
-# Install python 3.11
-
-#RUN sudo add-apt-repository ppa:deadsnakes/ppa
-
-#RUN sudo apt-get install python3.11
-
 # Setting up locales
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
