@@ -1,5 +1,9 @@
 # llama_cpp_java
 
+ВНИМАНИЕ, рекомендую использовать OLLAMA вместо этого решения.
+
+Ссылка для Java разработчиков: https://amithkoujalgi.github.io/ollama4j/docs/intro
+
 Как я знакомился с alpaca, llama.cpp, coboltcpp, cuda в docker и остальные премудрости ggml.
 
 Ветки:
