@@ -1,3 +1,0 @@
-Список последних рабочих моделей:
-Saiga2 русская модель:  https://huggingface.co/IlyaGusev/saiga2_13b_gguf/tree/main
-Сбер: https://huggingface.co/ai-forever
